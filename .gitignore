@@ -47,3 +47,104 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+library(readr)
+#HPV positivity graph 
+PositivityData <- read_csv("C:/Users/Malgorzata Rumowska/OneDrive - University of Edinburgh/MASTER_BY_RESEARCH/PositivityData.csv")
+View(PositivityData)
+PositivityData$`Sample size`<- factor(PositivityData$`Sample size`)
+PositivityData$`HPV infection prevalence` <- factor(PositivityData$`HPV infection prevalence`)
+stripchart( ~ PositivityData, data = PositivityData, add = TRUE, vertical - TRUE, method = "jitter")
+ggplot(PositivityData, aes(x = Date, y = Positivity)) + geom_point (color = "blue", size = 3) + labs(title = "Blablabla", x = "Year", y = "Positivity (%)") + theme_minimal() + theme (plot.title = element_text(hjust = 0.5, size = 16),
+PositivityData$`Sample size` <- as.numeric(as.character(PositivityData$`Sample size`))
+PositivityData$Rank <- rank(PositivityData)                                                                                                                                                                                      axis.text = element_text(size = 12),                                                                                                                                                                                      axis.title = element_text(size = 14)
+)
+ggplot(PositivityData, aes(x = Date, y = Positivity, color = Method)) +
+  geom_point(size = 3) + # Individual points with color based on Method
+  labs(
+    title = "Scatter Plot of Positivity Over Time by Method",
+    x = "Year",
+    y = "Positivity (%)",
+    color = "Method"
+  ) +
+  theme_minimal() + # Clean theme
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14) )
+
+ggplot(PositivityData, aes(x = Date, y = Positivity, color = Method, size = sqrt())) +
+  geom_point(alpha = 0.7) + # Use alpha to make overlapping points semi-transparent
+  labs(
+    title = "Scatter Plot of Positivity Over Time by Method",
+    x = "Year",
+    y = "Positivity (%)",
+    color = "Method", # Legend for colors
+    size = "Sample Size (sqrt)" # Legend for sizes
+  ) +
+  theme_minimal() + # Clean theme
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14)
+  )
+ggplot(PositivityData, aes(x = Date, y = Positivity, color = Method, size = sqrt(`Sample size`))) +
+  geom_point(alpha = 0.7) + # Use alpha to make overlapping points semi-transparent
+  labs(
+    title = "Scatter Plot of Positivity Over Time by Method",
+    x = "Year",
+    y = "Positivity (%)",
+    color = "Method", # Legend for colors
+    size = "Sample Size (sqrt)" # Legend for sizes
+  ) +
+  theme_minimal() + # Clean theme
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16),
+    axis.text = element_text(size = 12),
+    axis.title = element_text(size = 14)
+  )
+#Spearman's coefficient 
+colnames(data)[colnames(data) == "Date"] <- "Year"
+
+
+if ("Date" %in% colnames(PositivityData)) {
+  colnames(PositivityData)[colnames(PositivityData) == "Date"] <- "Year"
+}
+
+data$Rank_Year <- rank(PositivityData$Year, ties.method = "average")
+
+
+PositivityData$Positivity_Rank <- rank(PositivityData$`Sample size`)
+print(PositivityData)
+
+spearman_corr <- cor(PositivityData$`Year`, PositivityData$`HPV infection prevalence`, method = 'spearman')
+spearman_corr
+
+result <- cor.test(PositivityData$`Year`, PositivityData$`HPV infection prevalence`, method = 'spearman')
+print(result)
+
+#Spearman's coefficient for HPV PCR and HPV positivity and p16INK4a and HPV positvitiy
+library(tidyverse)
+filtered_data <- filtered_data <- PositivityData %>% filter(Method == "HPV PCR")
+filtered_data <- cor.test(filtered_data$Year, filtered_data$Positivity, method = "spearman")
+result <- cor.test(filtered_data$Year, filtered_data$Positivity, method = "spearman")
+print(resut)
+PositivityData$Year <- as.numeric(PositivityData$Year)
+
+str(PositivityData$Year)
+str(PositivityData$Positivity)
+filtered_data$Year <- as.numeric(as.character(filtered_data$Year))
+filtered_data$Year <- as.numeric(filtered_data$Year)
+
+str(filtered_data$Year)
+str(filtered_data)
+
+filtered_data <- PositivityData[PositivityData$Method == "HPV PCR", ]
+filtered_data$Year <- as.numeric(as.character(filtered_data$Year))
+filtered_data$Positivity <- as.numeric(as.character(filtered_data$Positivity))
+cor_result <- cor.test(filtered_data$Year, filtered_data$Positivity, method = "spearman")
+print(cor_result)
+
+filtered_data <- filtered_data <- PositivityData %>% filter(Method == "p16INK4a")
+filtered_data <- cor.test(filtered_data$Year, filtered_data$Positivity, method = "spearman")
+result <- cor.test(filtered_data$Year, filtered_data$Positivity, method = "spearman")
+print(filtered_data)
